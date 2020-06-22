@@ -1,13 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-import {Bar} from 'react-chartjs-2';
+import Layout from './hoc/Layout/Layout';
+import Chart from './containers/Chart/Chart';
 
 function App() {
   return (
     <div>
-      
+      <Layout>
+        <Chart/>
+      </Layout>
     </div>
   );
 }
