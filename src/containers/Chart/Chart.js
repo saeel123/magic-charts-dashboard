@@ -19,7 +19,7 @@ let dashboardData = [
                             borderWidth: 1,
                             hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                             hoverBorderColor: 'rgba(255,99,132,1)',
-                            data: [65, 59, 80]
+                            data: [20, 50, 60]
                         }
                     ]
                 } 
@@ -49,18 +49,18 @@ let dashboardData = [
                             pointHoverBorderWidth: 2,
                             pointRadius: 1,
                             pointHitRadius: 10,
-                            data: [65, 59, 80]
+                            data: [85, 29, 60]
                         }
                     ]
                 } 
             },
             {
                 id: 3, 
-                type: 'line', 
+                type: 'pie', 
                 data: {
                     labels: ['January', 'February', 'March'],
                     datasets: [{
-                        data: [300, 50, 100],
+                        data: [100, 20, 300],
                         backgroundColor: [
                         '#FF6384',
                         '#36A2EB',
@@ -130,11 +130,11 @@ let dashboardData = [
             },
             {
                 id: 3, 
-                type: 'line', 
+                type: 'pie', 
                 data: {
-                    labels: ['January', 'February', 'March'],
+                    labels: ['March', 'April', 'May'],
                     datasets: [{
-                        data: [300, 50, 100],
+                        data: [200, 20, 60],
                         backgroundColor: [
                         '#FF6384',
                         '#36A2EB',
@@ -159,6 +159,7 @@ class Chart extends Component {
     }
    
     loadDashboard = (id)=> {
+        this.setState({chartData: null});
         let result = dashboardData.filter(x => x.dId === id);
         this.setState({chartData: result[0]});
     }
@@ -175,19 +176,62 @@ class Chart extends Component {
             </button>
         ));
 
-        let chart = null;
+        let chartFinal = null;
+
+       
         if (this.state.chartData) {
-             chart = (
+            let charts = [];
+            this.state.chartData.charts.map(chart => {
+                switch (chart.type) {
+                    case 'bar':
+                        charts.push(
+                            <div>
+                                <h2>Bar Example (custom size)</h2>
+                                <Bar
+                                    data={chart.data}
+                                    width={100}
+                                    height={50}
+                                    options={{
+                                        maintainAspectRatio: false
+                                    }}
+                                />
+                            </div>)
+                        break;
+
+                    case 'line':
+                        charts.push(
+                            <div>
+                                <h2>Line Example</h2>
+                                <Line data={chart.data} />
+                            </div>
+                            )
+                        break;
+
+                    case 'pie':
+                        charts.push(
+                                <div>
+                                    <h2>Pie Example</h2>
+                                    <Pie data={chart.data} />
+                                </div>
+                            )
+                        break;
+                
+                    default:
+                        break;
+                }
+            });
+            
+            chartFinal = (
                 <div>
-                    {this.state.chartData.id}
+                  {charts}
                 </div> 
-             )       
+            )       
         } 
 
         return(
             <div>
-                {chart}
                 {dashboardlist}
+                {chartFinal}
             </div>
         )
     }
